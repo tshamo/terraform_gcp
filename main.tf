@@ -1,15 +1,25 @@
 provider "google" {
     project     = "andys-learning-project-379419"
     credentials = file("../credentials.json")
-    region      = "us-central1"
-    zone        = "us-central1-c"
 }
 
 resource "google_compute_instance" "my_instance" {
-    name         = "terra-instance-12"
-    machine_type = "e2-micro"
-    zone         = "us-east1-b"
-    allow_stopping_for_update = true
+    name         = var.google_compute_instance_name
+    machine_type = var.google_compute_instance_machine_type
+    zone         = var.google_compute_instance_zone
+    allow_stopping_for_update = var.google_compute_instance_allow_stopping_for_update
+    count        = var.google_compute_instance_count
+
+
+    tags = ["test1", "test2"]
+
+    metadata_startup_script =  file("/Users/tshamo/centos_httpd.sh")
+
+scheduling {
+        preemptible = true
+        automatic_restart = false
+    }
+
 
     boot_disk {
         initialize_params {
@@ -24,4 +34,24 @@ resource "google_compute_instance" "my_instance" {
 
         }
     }
+}
+
+resource "google_compute_firewall" "default" {
+  name    = "terra-gcp-firewall"
+  network = google_compute_network.default.name
+
+  allow {
+    protocol = "icmp"
+  }
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "8080", "1000-2000"]
+  }
+
+  source_tags = ["web"]
+}
+
+resource "google_compute_network" "default" {
+  name = "terra-gcp-network"
 }
