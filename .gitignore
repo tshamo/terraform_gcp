@@ -2,3 +2,4 @@
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
+file_to_be_ignored
