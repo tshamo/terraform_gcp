@@ -4,14 +4,18 @@ provider "google" {
 }
 
 resource "google_compute_instance" "my_instance" {
-    name         = var.google_compute_instance_name
+    count        = var.google_compute_instance_count
+    name         = "terra-vm-${count.index+1}"
     machine_type = var.google_compute_instance_machine_type
     zone         = var.google_compute_instance_zone
     allow_stopping_for_update = var.google_compute_instance_allow_stopping_for_update
-    count        = var.google_compute_instance_count
 
+    labels = {
+        env = "prod"
+        app = "core"
+    }
 
-    tags = ["test1", "test2"]
+    #tags = ["test1", "test2"]
 
     metadata_startup_script =  file("/Users/tshamo/centos_httpd.sh")
 
