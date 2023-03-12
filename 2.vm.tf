@@ -1,7 +1,3 @@
-provider "google" {
-    project     = "andys-learning-project-379419"
-    credentials = file("../credentials.json")
-}
 
 resource "google_compute_instance" "my_instance" {
     count        = var.google_compute_instance_count
@@ -14,8 +10,6 @@ resource "google_compute_instance" "my_instance" {
         env = "prod"
         app = "core"
     }
-
-    #tags = ["test1", "test2"]
 
     metadata_startup_script =  file("/Users/tshamo/centos_httpd.sh")
 

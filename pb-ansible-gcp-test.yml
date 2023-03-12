@@ -1,0 +1,25 @@
+- name: Create Service Account on GCP
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+
+    - name: create a service account
+      google.cloud.gcp_iam_service_account:
+        name: ansible-sa@graphite-playground.google.com.iam.gserviceaccount.com
+        display_name: My Ansible test key
+        project: andys-learning-project-379419
+        auth_kind: serviceaccount
+        service_account_file: "/Users/tshamo/repos/creds/gcp-staging-testSA.json"
+        state: present
+
+
+    # - name: create a service account key
+    #   google.cloud.gcp_iam_service_account_key:
+    #     service_account: ansible-sa
+    #     private_key_type: TYPE_GOOGLE_CREDENTIALS_FILE
+    #     path: "~/test_account.json"
+    #     project: andys-learning-project-379419
+    #     auth_kind: serviceaccount
+    #     service_account_file: "/Users/tshamo/repos/creds/gcp-staging-testSA.json"
+    #     state: present
