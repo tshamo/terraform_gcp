@@ -1,37 +1,39 @@
 
 resource "google_compute_instance" "my_instance" {
-    count        = var.google_compute_instance_count
-    name         = "terra-vm-${count.index+1}"
-    machine_type = var.google_compute_instance_machine_type
-    zone         = var.google_compute_instance_zone
-    allow_stopping_for_update = var.google_compute_instance_allow_stopping_for_update
+  count                     = var.google_compute_instance_count
+  name                      = "terra-vm-${count.index + 1}"
+  machine_type              = var.google_compute_instance_machine_type
+  zone                      = var.google_compute_instance_zone
+  allow_stopping_for_update = var.google_compute_instance_allow_stopping_for_update
 
-    labels = {
-        env = "prod"
-        app = "core"
+  labels = {
+    env = "prod"
+    app = "core"
+  }
+
+  tags = ["web", "dev"]
+
+  metadata_startup_script = file("/Users/tshamo/centos_httpd.sh")
+
+  scheduling {
+    preemptible       = true
+    automatic_restart = false
+  }
+
+
+  boot_disk {
+    initialize_params {
+      image = "centos-7-v20230306"
     }
+  }
 
-    metadata_startup_script =  file("/Users/tshamo/centos_httpd.sh")
+  network_interface {
+    network = "default"
+    access_config {
+      //necessary even empty
 
-scheduling {
-        preemptible = true
-        automatic_restart = false
     }
-
-
-    boot_disk {
-        initialize_params {
-            image = "centos-7-v20230306"
-        }
-    }
-  
-    network_interface {
-        network = "default"
-        access_config {
-            //necessary even empty
-
-        }
-    }
+  }
 }
 
 resource "google_compute_firewall" "default" {
