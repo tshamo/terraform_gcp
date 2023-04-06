@@ -7,6 +7,6 @@ terraform {
   }
 }
 provider "google" {
-  project     = "andys-learning-project-379419"
-  credentials = file("../credentials.json")
+  project     = "learngcp-382323"
+  #credentials = file("../credentials.json")
 }

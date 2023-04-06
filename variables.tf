@@ -5,7 +5,7 @@
 
 variable "project_id" {
   type    = string
-  default = "andys-learning-project-379419"
+  default = "learngcp-382323"
 }
 
 variable "google_compute_instance_machine_type" {
